@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>她的六年</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--card:#151515;--text:#e8e0d4;--dim:#7a746b;--accent:#c4956a;--accent2:#8b6f5e;--red:#9e4b4b;--blue:#4b6b8a;--green:#5a7a5a;--purple:#6b5278;--gold:#8a7a3a;--bar-h:#6b8a6b;--bar-w:#8a8a4b;--bar-c:#6b7a8a;--bar-a:#7a6b8a;--bar-m:#8a6b6b}
+html,body{width:100%;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC',sans-serif;font-size:15px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#app{max-width:420px;margin:0 auto;padding:16px;min-height:100vh;min-height:100dvh;position:relative}
+.fade-in{animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.screen{padding-bottom:40px}
+.title-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh;min-height:90dvh;text-align:center}
+.title-screen h1{font-size:28px;font-weight:300;letter-spacing:8px;margin-bottom:8px;color:var(--accent)}
+.title-screen .sub{font-size:13px;color:var(--dim);margin-bottom:48px;letter-spacing:2px}
+.title-screen .desc{font-size:12px;color:var(--dim);max-width:280px;line-height:1.9;margin-bottom:48px}
+.btn{display:block;width:100%;padding:14px 0;border:1px solid var(--accent2);background:transparent;color:var(--text);font-size:14px;letter-spacing:2px;cursor:pointer;transition:all .3s;border-radius:2px;margin-bottom:10px;font-family:inherit}
+.btn:hover,.btn:active{background:var(--accent2);color:#0a0a0a}
+.btn-main{border-color:var(--accent);color:var(--accent)}
+.btn-main:hover,.btn-main:active{background:var(--accent);color:#0a0a0a}
+.btn-small{padding:10px 0;font-size:13px}
+.section-title{font-size:11px;color:var(--dim);letter-spacing:4px;text-transform:uppercase;margin-bottom:16px}
+.card{background:var(--card);border-radius:4px;padding:20px;margin-bottom:16px;border-left:2px solid var(--accent2)}
+.card p{margin-bottom:12px;font-size:14px}
+.card p:last-child{margin-bottom:0}
+.card .label{font-size:11px;color:var(--dim);letter-spacing:1px;display:block;margin-bottom:4px}
+.narrative{font-size:14px;line-height:2;color:var(--text);margin-bottom:24px;padding:0 4px}
+.narrative .highlight{color:var(--accent)}
+.age-tag{display:inline-block;font-size:11px;color:var(--accent);border:1px solid var(--accent2);padding:2px 10px;border-radius:2px;margin-bottom:16px;letter-spacing:2px}
+.year-header{text-align:center;padding:40px 0 32px;border-bottom:1px solid #222;margin-bottom:24px}
+.year-header .age{font-size:42px;font-weight:200;color:var(--accent);letter-spacing:4px}
+.year-header .year-desc{font-size:12px;color:var(--dim);margin-top:8px}
+.stats-bar{margin-bottom:24px}
+.stat-row{display:flex;align-items:center;margin-bottom:8px}
+.stat-label{width:36px;font-size:11px;color:var(--dim);letter-spacing:1px;flex-shrink:0}
+.stat-track{flex:1;height:6px;background:#1a1a1a;border-radius:3px;overflow:hidden;margin:0 8px}
+.stat-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.stat-val{width:28px;font-size:11px;color:var(--dim);text-align:right;flex-shrink:0}
+.stat-change{font-size:10px;margin-left:4px;font-weight:bold}
+.stat-change.pos{color:var(--green)}
+.stat-change.neg{color:var(--red)}
+.choice-btn{display:block;width:100%;padding:16px;border:1px solid #2a2a2a;background:transparent;color:var(--text);font-size:13px;line-height:1.8;cursor:pointer;transition:all .3s;border-radius:2px;margin-bottom:10px;text-align:left;font-family:inherit}
+.choice-btn:hover,.choice-btn:active{border-color:var(--accent);background:rgba(196,149,106,.05)}
+.choice-btn .choice-label{color:var(--accent);font-size:11px;display:block;margin-bottom:4px;letter-spacing:2px}
+.result-card{background:var(--card);padding:20px;border-radius:4px;margin-bottom:20px;border-left:2px solid var(--accent)}
+.result-card .result-text{font-size:14px;line-height:2;margin-bottom:16px}
+.dialogue-screen{min-height:90vh;min-height:90dvh;display:flex;flex-direction:column;justify-content:center;padding:20px}
+.dialogue-screen .speaker{font-size:12px;color:var(--accent);letter-spacing:3px;margin-bottom:16px}
+.dialogue-screen .quote{font-size:15px;line-height:2.2;color:var(--text);margin-bottom:32px;font-style:italic}
+.dialogue-screen .context{font-size:11px;color:var(--dim);margin-bottom:32px}
+.ending-screen{min-height:90vh;min-height:90dvh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px}
+.ending-screen .ending-text{font-size:15px;line-height:2.4;margin-bottom:40px;text-align:left}
+.ending-screen .ending-title{font-size:18px;color:var(--accent);letter-spacing:4px;margin-bottom:24px;font-weight:300}
+.score-screen{min-height:90vh;min-height:90dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.score-screen .fake-score{font-size:20px;color:var(--dim);margin-bottom:32px;letter-spacing:2px}
+.score-screen .reveal{font-size:16px;line-height:2.4;color:var(--text);max-width:300px}
+.score-screen .emoji{font-size:24px;margin:0 4px}
+.creation-q{font-size:16px;color:var(--text);margin-bottom:24px;line-height:1.8}
+.divider{width:40px;height:1px;background:var(--accent2);margin:24px auto}
+.typewriter{overflow:hidden;white-space:pre-wrap}
+.progress-dots{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
+.progress-dots .dot{width:6px;height:6px;border-radius:50%;background:#2a2a2a}
+.progress-dots .dot.active{background:var(--accent)}
+.progress-dots .dot.done{background:var(--accent2)}
+.flag-note{font-size:11px;color:var(--accent2);margin-top:8px;font-style:italic;padding-left:12px;border-left:1px solid var(--accent2)}
+.butterfly{font-size:11px;color:var(--purple);margin-top:4px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ==================== GAME STATE ====================
+const G = {
+  stats: {h:60,w:50,c:50,a:50,m:50},
+  flags: {},
+  year: 0,
+  history: [],
+  dialoguesSeen: {},
+  creationStep: 0,
+  location: '',
+  family: '',
+  worry: ''
+};
+
+// ==================== UTILITY ====================
+const $ = id => document.getElementById(id);
+const app = () => document.getElementById('app');
+
+function clamp(v,min=0,max=100){return Math.max(min,Math.min(max,v))}
+
+function applyStats(effects){
+  const changes = {};
+  for(let k in effects){
+    const old = G.stats[k];
+    G.stats[k] = clamp(G.stats[k]+effects[k]);
+    changes[k] = G.stats[k] - old;
+  }
+  return changes;
+}
+
+function hasFlag(f){return !!G.flags[f]}
+function setFlag(f){G.flags[f]=true}
+
+function render(html){
+  const a = app();
+  a.innerHTML = `<div class="screen fade-in">${html}</div>`;
+  a.scrollTo({top:0,behavior:'auto'});
+}
+
+function statsHTML(changes){
+  const names = {h:'健康',w:'财富',c:'人脉',a:'学业',m:'心智'};
+  const colors = {h:'var(--bar-h)',w:'var(--bar-w)',c:'var(--bar-c)',a:'var(--bar-a)',m:'var(--bar-m)'};
+  let s = '<div class="stats-bar">';
+  for(let k in names){
+    const v = G.stats[k];
+    const ch = changes && changes[k] ? changes[k] : 0;
+    const chHTML = ch !== 0 ? `<span class="stat-change ${ch>0?'pos':'neg'}">${ch>0?'+':''}${ch}</span>` : '';
+    s += `<div class="stat-row">
+      <span class="stat-label">${names[k]}</span>
+      <div class="stat-track"><div class="stat-fill" style="width:${v}%;background:${colors[k]}"></div></div>
+      <span class="stat-val">${v}${chHTML}</span>
+    </div>`;
+  }
+  s += '</div>';
+  return s;
+}
+
+function progressHTML(current,total=6){
+  let s='<div class="progress-dots">';
+  for(let i=0;i<total;i++){
+    const cls = i<current?'done':i===current?'active':'';
+    s+=`<div class="dot ${cls}"></div>`;
+  }
+  s+='</div>';
+  return s;
+}
+
+// ==================== SCREENS ====================
+function showTitle(){
+  render(`
+    <div class="title-screen">
+      <h1>她的六年</h1>
+      <div class="sub">一个女性成长模拟器</div>
+      <div class="desc">
+        18岁到24岁。<br>
+        六年，六个选择。<br>
+        每一个选择都会改变你的人生轨迹。<br><br>
+        这不是一个有标准答案的游戏。<br>
+        这是你的故事。
+      </div>
+      <button class="btn btn-main" onclick="showCreation1()">开始</button>
+    </div>
+  `);
+}
+
+function showCreation1(){
+  render(`
+    <div class="section-title">创建角色 · 1/3</div>
+    <div class="creation-q">你在哪里长大？</div>
+    <button class="choice-btn" onclick="pickLocation('city1')">
+      <span class="choice-label">一线城市</span>
+      资源多，竞争大，见过世面，也见过代价
+    </button>
+    <button class="choice-btn" onclick="pickLocation('city2')">
+      <span class="choice-label">二三线城市</span>
+      不远不近，什么都有一点，什么都差一点
+    </button>
+    <button class="choice-btn" onclick="pickLocation('town')">
+      <span class="choice-label">县城 / 乡镇</span>
+      人人都认识，每个选择都有人盯着看
+    </button>
+  `);
+}
+
+function pickLocation(loc){
+  G.location = loc;
+  if(loc==='city1'){G.stats={h:55,w:65,c:60,a:65,m:50}}
+  else if(loc==='city2'){G.stats={h:60,w:50,c:50,a:55,m:55}}
+  else{G.stats={h:65,w:35,c:40,a:45,m:60}}
+  showCreation2();
+}
+
+function showCreation2(){
+  render(`
+    <div class="section-title">创建角色 · 2/3</div>
+    ${statsHTML()}
+    <div class="creation-q">你的家庭是什么样的？</div>
+    <button class="choice-btn" onclick="pickFamily('open')">
+      <span class="choice-label">开明支持</span>
+      他们不一定懂你，但愿意让你试
+    </button>
+    <button class="choice-btn" onclick="pickFamily('normal')">
+      <span class="choice-label">普通期待</span>
+      希望你安稳，最好别出格
+    </button>
+    <button class="choice-btn" onclick="pickFamily('control')">
+      <span class="choice-label">强控制 / 重男轻女</span>
+      你的人生有一张他们画好的地图
+    </button>
+    <button class="choice-btn" onclick="pickFamily('single')">
+      <span class="choice-label">单亲 / 家庭缺位</span>
+      很早就学会了一个人扛
+    </button>
+  `);
+}
+
+function pickFamily(f){
+  G.family = f;
+  const fx = {
+    open:{h:5,w:10,c:10,a:10,m:15},
+    normal:{h:0,w:0,c:0,a:5,m:-5},
+    control:{h:-5,w:-10,c:-5,a:-5,m:-15},
+    single:{h:-5,w:-15,c:-10,a:0,m:10}
+  };
+  applyStats(fx[f]);
+  showCreation3();
+}
+
+function showCreation3(){
+  render(`
+    <div class="section-title">创建角色 · 3/3</div>
+    ${statsHTML()}
+    <div class="creation-q">现在最困扰你的是什么？</div>
+    <button class="choice-btn" onclick="pickWorry('lost')">
+      <span class="choice-label">我不知道自己想要什么</span>
+      好像每条路都可以，又好像每条路都不是
+    </button>
+    <button class="choice-btn" onclick="pickWorry('expect')">
+      <span class="choice-label">我总是活在别人的期待里</span>
+      做的每件事都是为了让谁满意
+    </button>
+    <button class="choice-btn" onclick="pickWorry('alone')">
+      <span class="choice-label">我很孤独，但不知道怎么开口</span>
+      身边有人，心里没人
+    </button>
+    <button class="choice-btn" onclick="pickWorry('notgood')">
+      <span class="choice-label">我害怕自己不够好</span>
+      努力了也不确定有没有用
+    </button>
+    <button class="choice-btn" onclick="pickWorry('body')">
+      <span class="choice-label">我的身体在透支</span>
+      停不下来，也不敢停
+    </button>
+  `);
+}
+
+function pickWorry(w){
+  G.worry = w;
+  const fx = {
+    lost:{m:-10},expect:{m:-15},alone:{c:-10},notgood:{a:-10},body:{h:-15}
+  };
+  const wflags = {lost:'worry_lost',expect:'worry_expect',alone:'worry_alone',notgood:'worry_notgood',body:'worry_body'};
+  applyStats(fx[w]);
+  setFlag(wflags[w]);
+  startGame();
+}
+
+// ==================== EVENT DATA (30 Events) ====================
+const EVENTS = [
+  // ===== POOL 1: 18岁 高三 (events 0-4) =====
+  {id:'e01',pool:1,age:18,title:'文理分科',
+    cond:()=>true,priority:10,
+    text:'高三分班前。班主任把你叫到办公室，翘着二郎腿，用一种"为你好"的语气说：\n\n「女生学理科太吃力了。你的成绩去文科稳稳的，以后考个师范，多好。」\n\n他的语气不容置疑。办公桌上摆着他女儿的照片——也是个女孩，正在念师范。',
+    choices:[
+      {text:'听从建议，转文科',
+        effects:{a:5,m:-10},flags:['went_arts'],
+        result:'你在分班表上签了字。手指握着笔的时候，有一种说不出的空。\n\n文科班的同学们在讨论历史和政治，你坐在靠窗的位置，想：这也不差。但你知道你的物理卷子上，最后一道大题，你是会做的。'},
+      {text:'坚持留在理科班',
+        effects:{a:-5,m:15},flags:['stayed_science'],
+        result:'你说："老师，我想留在理科。"\n\n他的表情像是吃了个酸果。"随你。"\n\n回到教室，压力像潮水一样。但那天晚上做物理题的时候，笔尖落在纸上，你觉得踏实。'},
+      {text:'表面答应，私下按自己的方向准备',
+        effects:{w:-5,m:10,c:-5},flags:['double_life'],
+        result:'你微笑着说好。\n\n然后用攒了三个月的零花钱报了网课，在自习课上偷偷刷题。班主任以为你在乖乖念文科，你妈以为你在听话。\n\n只有你自己知道，你在两条路上同时走着。很累。但这是你自己选的累。'}
+    ]
+  },
+  {id:'e02',pool:1,age:18,title:'高考前夜',
+    cond:()=>true,priority:5,
+    text:'高考前一晚。你坐在书桌前，面前摊着笔记，但一个字也看不进去。\n\n妈妈推门进来，放下一杯牛奶。她欲言又止，最后说了一句：「考不好也没事……女孩子嘛，以后找个好对象也一样。」\n\n她走了之后，牛奶在桌上冒着热气。你盯着那杯牛奶，不知道该感动还是该生气。',
+    choices:[
+      {text:'什么也没说，把牛奶喝了，继续看书',
+        effects:{h:5,m:-5},flags:['swallowed'],
+        result:'牛奶是甜的。眼眶也是热的。\n\n你翻开下一页笔记，在心里跟自己说：我不是为了找对象才坐在这里的。但你没说出口。有些话，说出来要花比考试更大的力气。'},
+      {text:'去找妈妈谈：我不需要"退路"',
+        effects:{m:15,c:-5},flags:['spoke_to_mom'],
+        result:'「妈，我不想把'找对象'当退路。」\n\n她愣了。然后笑了一下，那种不知道怎么接话的笑。「我就是说说……」\n\n你知道她爱你。但爱和理解之间，隔着一整代人的距离。'},
+      {text:'在日记里写下：我要为自己考',
+        effects:{m:10},flags:['diary'],
+        result:'你拿出那本发黄的日记本，写了一行字：\n\n"明天的考试是为我自己。不管结果怎样，这件事是我自己的。"\n\n写完之后，牛奶凉了。但你觉得手不抖了。'}
+    ]
+  },
+  {id:'e03',pool:1,age:18,title:'外貌焦虑',
+    cond:()=>hasFlag('worry_body')||hasFlag('worry_notgood'),priority:8,
+    text:'班里开始流行一个"颜值评分"的游戏。男生们在群里给女生打分，1到10分。\n\n你的好朋友哭着找你，说她被打了3分。你安慰了她一整个中午，但回家之后打开手机，忍不住去看了自己的分数。\n\n6分。\n\n你知道这个评分毫无意义。但那个"6"像一根刺，扎在心里拔不出来。',
+    choices:[
+      {text:'在群里发了一段话：谁给了你们打分的权力？',
+        effects:{m:15,c:-10},flags:['spoke_against_rating'],
+        result:'消息发出去，群里先是安静了三秒。然后有人回了个「哟」。有人说「开不起玩笑」。但你的好朋友私信你：谢谢。\n\n那天晚上你删了群。那个"6"还在，但你决定不让它定义你了。'},
+      {text:'默默退群，但开始研究穿搭和护肤',
+        effects:{h:-5,w:-5,m:-5},flags:['appearance_anxiety'],
+        result:'你退了群。然后打开了购物app。\n\n防晒、精华、眼霜。你不确定自己是在"变好"还是在"补救"。镜子里的你没有变，但你开始用一种审视的眼光看自己。\n\n你告诉自己这叫"精致"。但在某些深夜，你知道这叫不安。'},
+      {text:'跟好朋友一起约定：我们不看那个群了',
+        effects:{c:10,m:5},flags:['pact_with_friend'],
+        result:'你打电话给她。"我们把这个群删了好不好？"\n\n她在电话那头沉默了一会儿，然后说："好。"\n\n那天你们聊了很久，聊小时候，聊以后想去的地方。没人打分，没有排名。你想起来，有一个人愿意听你说话，比10分值钱多了。'}
+    ]
+  },
+  {id:'e04',pool:1,age:18,title:'母亲的期待',
+    cond:()=>G.family==='control'||G.family==='normal',priority:7,
+    text:'寒假。亲戚聚餐。\n\n你妈当着所有人的面说：「我们家闺女可乖了，学习好，又懂事，以后肯定找个好人家。」\n\n饭桌上所有人都在笑，你姑姑接话：「女孩子最重要的是嫁得好。」\n\n你夹菜的筷子停在了半空。',
+    choices:[
+      {text:'放下筷子说：「我最重要的是活得好。」',
+        effects:{m:20,c:-15},flags:['defied_family'],
+        result:'饭桌突然安静了。你妈的脸色变了。\n\n回家的路上，她一路没说话。到家门口，她终于开口："你让我多没面子。"\n\n你说："妈，我不想让你没面子。但我也不想让自己没有自己。"\n\n她摔了门。你在自己房间里，既后悔又不后悔。'},
+      {text:'笑笑不说话，在心里记住了这一刻',
+        effects:{m:-10},flags:['family_silence'],
+        result:'你笑了笑，低头吃饭。筷子夹起的菜，嚼起来没有味道。\n\n你在心里想：以后我自己的孩子，我不会这样说。\n\n但"以后"太远了。"现在"的窒息感，才是真实的。'},
+      {text:'私下跟妈妈谈：你能不能不在外面这样说我？',
+        effects:{m:5,c:5},flags:['private_talk_mom'],
+        result:'晚上，你敲了她房间的门。\n\n「妈，你能不能以后在亲戚面前……不那样说？」\n\n她看着你，半晌说：「我是在夸你啊。」\n\n你意识到，在她的认知里，"好嫁"确实是夸奖。你们之间的距离，不是一次谈话能跨越的。但你说了。这件事本身就是一步。'}
+    ]
+  },
+  {id:'e05',pool:1,age:18,title:'初恋困境',
+    cond:()=>true,priority:3,
+    text:'有个男生跟你表白了。他人不坏，但你们在一起之后，他开始管你的事：不许跟其他男生说话，每天要报备行踪，你多看手机一会儿他就不高兴。\n\n他说这是因为太爱你了。\n\n你信了一段时间。直到有一天，你因为回复朋友消息慢了五分钟，他发了37条微信。',
+    choices:[
+      {text:'提分手',
+        effects:{m:15,c:-5,h:5},flags:['broke_up_first'],
+        result:'你说了分手。\n\n他先是愣了，然后哭了，然后发火了。"你会后悔的。"\n\n你没后悔。但你花了很长时间才停止检查手机上有没有他的消息。37条微信的阴影，比你以为的久。'},
+      {text:'觉得他只是太在意自己，再给一次机会',
+        effects:{m:-15,h:-5,c:-10},flags:['stayed_controlling'],
+        result:'你说服自己：他只是不安全感重。\n\n但"再给一次机会"变成了两次、三次、无数次。你开始减少和朋友的联系。你开始习惯先想"他会不会生气"，再想"我想不想做这件事"。\n\n你不知道什么时候开始的，但你的世界在缩小。'},
+      {text:'找一个信任的朋友或长辈聊聊这件事',
+        effects:{c:10,m:10},flags:['sought_advice_love'],
+        result:'你跟好朋友说了这件事。她沉默了一会儿，然后问你：\n\n「如果是我男朋友这样对我，你会怎么跟我说？」\n\n你张了张嘴，忽然说不出话。因为你知道，如果是她，你一定会说「离开他」。\n\n答案一直在你心里。你只是需要有人帮你说出来。'}
+    ]
+  },
+
+  // ===== POOL 2: 19-20岁 大一大二 (events 5-9) =====
+  {id:'e06',pool:2,age:19,title:'导师偏见',
+    cond:()=>true,priority:10,
+    text:'大一下学期。你所在的专业女生占七成，但导师在介绍科研机会时，目光几乎只落在那几个男生身上。\n\n学期末，一个成绩比你低15分的男同学进了导师的实验室。你鼓起勇气去问导师，他说：\n\n「实验室工作很辛苦，你们女生……不太方便。」',
+    choices:[
+      {text:'坚持争取：我可以做，请给我机会',
+        effects:{c:-10,m:20},flags:['fought_for_lab'],
+        result:'你站在他办公室门口，说了三遍"我可以"。\n\n他最终给了你一个"试用期"——而那个男同学没有试用期。\n\n不公平。但你进去了。你在心里记住了这个代价：女生要说三遍，男生一遍就够。'},
+      {text:'加倍努力学习，用成绩证明自己',
+        effects:{a:10,h:-15,m:-10},flags:['overwork_prove'],
+        result:'你开始每天六点起床泡图书馆，凌晨一点回宿舍。GPA从3.5冲到3.9。\n\n但那个男同学已经在实验室发了论文，而你的简历上只有分数。\n\n你用透支换来的成绩，在这个系统里，抵不过一次"被选中"。你不知道该怪自己不够努力，还是该怪这个"不太方便"。'},
+      {text:'和同专业的女生们讨论，记录下来',
+        effects:{c:10,m:5},flags:['documented_bias'],
+        result:'你在宿舍楼下拉了一个小群，叫"我们的不方便"。\n\n三天之内，群里多了47个人。她们每个人都有一个"不方便"的故事。有人被导师叫"小姑娘"，有人被拒绝参加学术会议因为"出差不安全"。\n\n你不知道这些故事最终会去哪里。但至少，它们不再是一个人的秘密了。'}
+    ]
+  },
+  {id:'e07',pool:2,age:19,title:'室友矛盾',
+    cond:()=>true,priority:5,
+    text:'室友小薇开始在社交媒体上发一些含沙射影的内容。你们共同的朋友跟你说，她在背后说你"心机重""表面一套背后一套"。\n\n你完全不知道自己做了什么。你甚至昨天还帮她带了早饭。\n\n你翻看她的朋友圈，每一条都像在说你，又好像不是。',
+    choices:[
+      {text:'直接找她谈',
+        effects:{m:10,c:5},flags:['confronted_roommate'],
+        result:'「小薇，我看到你发的那些，你有什么想跟我说的吗？」\n\n她先是否认，然后沉默，最后哭了。原来她的奖学金没评上，而你评上了。她不是恨你，她是恨自己。\n\n你们那天聊到了凌晨三点。问题没有完全解决，但至少，你们看到了彼此。'},
+      {text:'冷处理，减少接触',
+        effects:{m:-5,c:-10},flags:['cold_roommate'],
+        result:'你开始戴耳机，早出晚归，在图书馆待到闭馆。宿舍变成了一个只用来睡觉的地方。\n\n室友们开始选边站。你不知道自己是"赢了"还是"输了"——你只是不想再消耗了。\n\n但每天回到那个六人间，呼吸都是压抑的。'},
+      {text:'跟其他室友聊聊，了解发生了什么',
+        effects:{c:10,m:5},flags:['allies_roommate'],
+        result:'另一个室友告诉你真相：小薇的家里最近出了事，经济压力很大，而你的奖学金名额……本来她也在争取。\n\n你没有完全原谅她的做法。但你理解了背后的原因。你发了一条消息给她：「如果有什么我能帮的，跟我说。」\n\n她没有回复。但第二天，她帮你带了早饭。'}
+    ]
+  },
+  {id:'e08',pool:2,age:20,title:'社团里的"开玩笑"',
+    cond:()=>true,priority:6,
+    text:'社团聚餐。喝了几杯之后，一个学长开始讲黄色笑话，而且越讲越过分。其中一个明显是在说你。\n\n桌上的男生们都在笑。有几个女生也在笑——那种不太自然的、陪着的笑。\n\n学长看着你说：「诶，你怎么不笑？开不起玩笑啊？」',
+    choices:[
+      {text:'「这个玩笑不好笑。」',
+        effects:{m:20,c:-10},flags:['rejected_joke'],
+        result:'你的声音不大，但在笑声里像一把刀。\n\n学长的笑凝固了。"至于吗？"\n\n至于。你站起来，拿了外套，走了。在门口，你听到后面有人也站起来了——是另一个女生。\n\n你们没有说话，但你们一起走了。有些话，行动比语言更清楚。'},
+      {text:'尴尬地笑了笑，找借口离开',
+        effects:{m:-10,h:-5},flags:['forced_laugh'],
+        result:'你笑了。那种自己都觉得恶心的笑。\n\n然后你说胃不舒服，先走了。在出租车后座，你打开手机，想发一条朋友圈，写了又删、删了又写。\n\n最终什么都没发。但那天晚上洗澡的时候，你把水温调到了很烫，好像要把什么东西冲掉。'},
+      {text:'事后在社团群里发了一条消息，说明感受',
+        effects:{m:10,c:5},flags:['spoke_after'],
+        result:'第二天，你在群里打了一段话：\n\n「昨天的笑话让我很不舒服。这不是开不起玩笑的问题，是尊重的问题。」\n\n有人刷了一排省略号。有人私聊你说"你说得对"。学长退群了。\n\n你不确定这是胜利还是什么。但至少，这个群里从此没有人再讲那种笑话了。'}
+    ]
+  },
+  {id:'e09',pool:2,age:20,title:'经济独立的第一步',
+    cond:()=>true,priority:4,
+    text:'你开始做兼职——写公众号文案，50块一篇。每天下课之后赶稿到凌晨，一个月能赚一千五。\n\n你妈打电话来："你缺钱跟家里说，别在外面丢人。"\n\n她觉得兼职是"丢人"的事。而你看着支付宝余额里那个属于自己的数字，觉得那是你目前为止最骄傲的东西。',
+    choices:[
+      {text:'继续做，不再跟家里要生活费',
+        effects:{w:15,h:-10,m:10},flags:['financially_independent'],
+        result:'你把生活费存了起来。每个月看着账户里的数字涨，有一种踏实感是任何别的东西给不了的。\n\n代价是黑眼圈和日渐减少的睡眠。你的室友问你为什么总在赶东西。你说"我在给自己挣一间自己的房间。"\n\n她没听懂。但你懂。'},
+      {text:'减少兼职，平衡学业',
+        effects:{w:5,a:5,m:5},flags:['balanced_work'],
+        result:'你把兼职从每天减到每周三篇。收入少了，但成绩稳住了。\n\n你开始学会一件事：所有东西都有代价，选择不是"要不要"，而是"要多少"。\n\n月底看着比同学们少一些的账户余额，你想：不多，但够用。够用就是自由的起点。'},
+      {text:'跟妈妈解释清楚：这不是丢人，这是学习',
+        effects:{c:10,m:10},flags:['explained_to_mom'],
+        result:'你打了一个很长的电话。你跟她说了文案怎么写、客户怎么对接、deadline是什么。她听了半天，最后说：\n\n「那……你注意身体。」\n\n她没说"我为你骄傲"，但"注意身体"是她能给出的最接近的版本了。你挂了电话，心里暖了一下。'}
+    ]
+  },
+  {id:'e10',pool:2,age:19,title:'网络暴力',
+    cond:()=>true,priority:3,
+    text:'你在社交媒体上分享了一篇关于性别平等的文章，加了自己的评论。\n\n一觉醒来，评论区炸了。\n\n"女拳警告""又一个被洗脑的""找不到男朋友才会发这种东西""心理有病"。\n\n其中有几个头像，你认出来是同校的人。',
+    choices:[
+      {text:'不删帖，逐一回复有逻辑的反驳',
+        effects:{m:15,h:-10,c:-5},flags:['fought_online'],
+        result:'你花了三个小时回复评论。每一条都有理有据，每一条都让你心跳加速。\n\n有人开始转发你的回复说"说得好"。也有人开始人肉你的个人信息。\n\n你发现了互联网的真相：你说的越对，有些人就越恨你。但你不后悔。'},
+      {text:'删帖，退出社交媒体一段时间',
+        effects:{m:-10,h:5},flags:['retreated_online'],
+        result:'你删了帖子。然后卸载了app。\n\n三天后你重新装上去，小心翼翼地只发风景照。你的朋友说"你最近好安静"。\n\n你没说原因。有些安静，是被吓出来的。'},
+      {text:'截图保存，私信那几个认识的人：你们在做什么？',
+        effects:{m:10,c:5},flags:['confronted_online'],
+        result:'你私信了那两个同校的人。其中一个秒删了评论，假装无事发生。另一个回了你一句："我就是随便说说，你别当真。"\n\n你截图保存了所有对话。你不确定以后会不会用到，但你知道：证据是一种力量，即使你现在还不知道怎么用它。'}
+    ]
+  },
+
+  // ===== POOL 3: 20-21岁 大三 (events 10-14) =====
+  {id:'e11',pool:3,age:20,title:'实习·会议室',
+    cond:()=>true,priority:10,
+    text:'你得到了一个好公司的实习机会。第一周，你在会议上提出了一个方案。\n\n没人回应。\n\n五分钟后，坐在你对面的男实习生用几乎一样的话重新说了一遍。领导点头："小陈的想法不错。"\n\n你看着他，他没有看你。',
+    choices:[
+      {text:'当场说：「这是我五分钟前说的方案。」',
+        effects:{m:20,c:-15},flags:['spoke_in_meeting'],
+        result:'你的声音在会议室里回荡。所有人都看着你。\n\n领导清了清嗓子："是吗？那……你再说一遍？"\n\n你说了。这一次，他们听了。但你注意到几个人交换了眼神，那种"这个女的真难搞"的眼神。\n\n你在简历上又多了一项能力：在不被看见的地方，学会制造声音。'},
+      {text:'会后找那个男实习生单独谈',
+        effects:{c:5,m:5},flags:['private_talk_colleague'],
+        result:'「小陈，刚才那个方案……你知道是我先说的吧？」\n\n他愣了一下，然后说："啊？我没听到……真的，不好意思。"\n\n你不确定他是真的没听到，还是假装的。但你说了这句话。在职场里，有些话不说出来，就永远不存在。'},
+      {text:'把方案整理成文档，发给全组，署上自己的名字',
+        effects:{a:10,m:10},flags:['documented_work'],
+        result:'当天晚上，你加班到九点，把方案写成了完整的文档，用邮件发给了整个组。\n\n邮件标题写着你的名字。附件里每一页都有你的名字。\n\n第二天领导找你："你那个方案写得不错。"\n\n白纸黑字，比会议室里的声音更持久。'}
+    ]
+  },
+  {id:'e12',pool:3,age:20,title:'理工科女生',
+    cond:()=>hasFlag('stayed_science'),priority:9,
+    text:'实验室里只有你一个女生。组会上，导师介绍你是"我们组的那个女生"，而不是你的名字。\n\n男同学们笑了："终于有个女生了，以后谁来泡咖啡？"\n\n你手里拿着的是你做了两周的实验数据。',
+    choices:[
+      {text:'「我叫[你的名字]，不是'那个女生'。而且，咖啡你们自己泡。」',
+        effects:{m:20,c:-5},flags:['named_self'],
+        result:'实验室安静了两秒。然后导师笑了一下："行，那我们看看你的数据吧。"\n\n你打开PPT。你的数据说话了——比任何语言都清楚。\n\n从那之后，至少在组会上，你有了自己的名字。'},
+      {text:'不说话，专注做出最好的成果',
+        effects:{a:15,m:-10,h:-10},flags:['silent_excellence'],
+        result:'你决定用成果回答。三个月后，你的论文初稿完成了，组里最快的。\n\n但在论文署名的时候，导师把你排在了第四位——排在两个几乎没参与的男生后面。\n\n你盯着署名单，想：我的数据、我的实验、我的论文，我排第四。沉默的代价，原来是这个。'},
+      {text:'联系其他学校的女性科研社群',
+        effects:{c:15,m:10},flags:['found_women_sci'],
+        result:'你在网上搜到了一个"女性科研工作者支持网络"。你发了一封邮件，讲了你的情况。\n\n三天后，一个女博士后回了你。她说："我在组里也是唯一的女生。我理解你。"\n\n你们开始每周通一次电话。她帮你看论文，你帮她排解孤独。在这个全是男性的实验室之外，你找到了一个小小的、温暖的坐标。'}
+    ]
+  },
+  {id:'e13',pool:3,age:21,title:'身体警报',
+    cond:()=>G.stats.h<=35||hasFlag('overwork_prove')||hasFlag('worry_body'),priority:8,
+    text:'你已经连续三周每天只睡四个小时。\n\n某天早上刷牙的时候，你站起来，眼前突然一黑。你扶着洗手台，等了十秒钟，世界才慢慢回来。\n\n室友在外面喊你快点，你说"马上"。但你的手在抖。',
+    choices:[
+      {text:'去医院，给自己放一周假',
+        effects:{h:20,a:-10,w:-5},flags:['took_rest'],
+        result:'医生看了你的报告，沉默了一会儿，说："你才二十岁，这是四十岁人的指标。"\n\n你请了一周假。躺在宿舍里，第一天焦虑得要死，觉得全世界都在前进只有你在后退。第二天开始，你睡着了。\n\n醒来的时候，阳光从窗帘缝里漏进来，你想不起来上次看见阳光是什么时候了。'},
+      {text:'买了维生素，继续撑',
+        effects:{h:-10,a:5},flags:['kept_pushing'],
+        result:'你在药店买了B族维生素和铁片。吃了之后好像好了一点。\n\n但你心里知道这不是解决方案，这是拆东墙补西墙。身体像一个账户，你一直在透支，维生素只是延长了还款期限。\n\n你告诉自己：再撑一下，等这学期结束就休息。但你每学期都这么说。'},
+      {text:'开始每周给自己一天什么都不做',
+        effects:{h:10,m:10},flags:['rest_day'],
+        result:'你在手机日历上，每周三标了一个红色方块。那是你的"停机日"。\n\n第一个周三，你躺在床上，焦虑感像海水。你忍住了打开电脑的冲动。看了一下午窗外的云。\n\n第二个周三，你开始期待那个红色方块了。你发现，休息不是偷懒，休息是你给自己续的命。'}
+    ]
+  },
+  {id:'e14',pool:3,age:21,title:'感情中的控制',
+    cond:()=>hasFlag('stayed_controlling')||true,priority:6,
+    text:( hasFlag('stayed_controlling')
+      ? '你和他还在一起。情况没有好转。他现在会检查你的手机，会在你和朋友出去的时候连续打电话，会在你拒绝回家的时候沉默三天，用冷暴力惩罚你。\n\n你的朋友越来越少。你的世界越来越小。直到有一天你发现，你已经忘了"自己想要什么"是什么感觉了。'
+      : '你谈了一段新恋爱。一开始很好，但慢慢地，他开始"建议"你少和某些朋友来往、"建议"你的穿着、"建议"你的职业规划。\n\n每一个"建议"都包裹在"为你好"里。你开始怀疑：是我太敏感了吗？'),
+    choices:[
+      {text:'离开这段关系',
+        effects:{m:20,c:-5,h:10},flags:['left_controlling_rel'],
+        result:'分手那天，你的手机轻了。不是因为他不再发消息了，而是你终于不用害怕手机响了。\n\n前三天很难。你习惯了向一个人汇报自己的生活，现在忽然没人问你在哪里、在干什么，反而有一种空旷感。\n\n但第四天，你自己决定晚上去吃什么、穿什么出门、跟谁打电话。你发现了一种陌生的感觉。\n\n自由。原来是这样的。'},
+      {text:'试着沟通：你的"建议"让我不舒服',
+        effects:{m:5,c:5},flags:['tried_communicate'],
+        result:'你跟他说了。他先是惊讶，然后说："我是为你好啊。"\n\n"为我好"三个字，像一面盾牌，挡住了你所有的不舒服。你不知道这次沟通有没有用——他说他会改，但你以前也听过同样的话。\n\n你决定给自己设一个期限：一个月。一个月后如果还是这样，你就走。'},
+      {text:'开始读一些关于亲密关系的书',
+        effects:{m:15,a:5},flags:['read_about_love'],
+        result:'你在图书馆找到了一本《亲密关系中的控制》。\n\n第一章你就开始划线。每一个案例你都觉得眼熟。"情绪勒索""煤气灯效应""以爱之名的控制"。\n\n你读完那本书之后，没有马上做任何决定。但你开始能叫出那些让你不舒服的东西的名字了。能命名，就是夺回力量的第一步。'}
+    ]
+  },
+  {id:'e15',pool:3,age:21,title:'双面人生',
+    cond:()=>hasFlag('double_life'),priority:9,
+    text:'你当初表面答应了班主任的安排，暗地里走了自己的路。现在你拿到了一个跨学科项目的入场券——但你需要告诉家里真相。\n\n你妈以为你在念师范。你爸以为你以后会回老家当老师。而你手里拿着的是一个完全不同的未来。',
+    choices:[
+      {text:'坦白一切',
+        effects:{m:15,c:-10},flags:['came_clean'],
+        result:'你拨了那个电话。说到第三句的时候，你妈打断了你："你骗了我们两年？"\n\n电话那头是长久的沉默。然后你爸接过来："你想好了？"\n\n"想好了。"\n\n又是沉默。然后他说："那你自己负责。"\n\n这三个字比任何支持都重。但也比任何反对都轻。你是自由的了——带着代价的自由。'},
+      {text:'先把结果做出来再说',
+        effects:{a:10,m:-5,h:-5},flags:['delayed_truth'],
+        result:'你决定再等等。等项目出了成果，等你有了可以展示的东西，再告诉他们。\n\n你像一个间谍一样生活：白天做项目，晚上编造"师范课程"的近况回复家里。每一次视频通话都是一场表演。\n\n你很累。但你也清楚，有些真相需要附带证据，才能被接受。'},
+      {text:'找一个家里的"盟友"先通个气',
+        effects:{c:10,m:5},flags:['family_ally'],
+        result:'你给表姐打了电话。她是家里唯一一个在外面闯荡的女性。\n\n她听完之后笑了："我当年也是。你妈当时骂了我半年，现在逢年过节夸我夸得最凶。"\n\n她答应帮你铺垫。你不用独自面对风暴了——有人愿意和你一起站在风口。'}
+    ]
+  },
+
+  // ===== POOL 4: 21-22岁 大四 (events 15-19) =====
+  {id:'e16',pool:4,age:21,title:'权力的阴影',
+    cond:()=>true,priority:10,
+    text:'一个有权力的人——可能是导师、实习领导、或者某个"前辈"——在一次私下场合说了让你极度不适的话。\n\n他说："你条件不错，配合一下，对你以后有好处。"\n\n他的手放在你的肩膀上。你能闻到他身上烟味混合咖啡的气息。空气变得很粘稠。',
+    choices:[
+      {text:'拿开他的手，明确拒绝，保存证据',
+        effects:{m:15,w:-10,c:-15},flags:['refused_harassment','has_evidence'],
+        result:'你把他的手拿开了。"请你尊重我。"\n\n他的表情从惊讶变成恼怒，最后变成那种"你会后悔的"微笑。\n\n你走出那间办公室之后，在楼梯间截图了他之前发的所有暧昧信息。你的手在抖。但你的手机里，多了一样武器。\n\n接下来的日子不好过。但至少，你没有在那间办公室里丢掉自己。'},
+      {text:'找一个信任的人倾诉',
+        effects:{c:10,m:5},flags:['told_someone_harassment'],
+        result:'你打电话给你最信任的朋友，说了十分钟就说不下去了。\n\n她沉默了很久，然后说："这不是你的错。"\n\n五个字。你没想到自己这么需要听到这五个字。\n\n她帮你梳理了选择：举报、转组、收集证据、先保护自己。你不用一个人做决定了。\n\n有些重量，分给另一个人扛，就不会压断你。'},
+      {text:'不说，不想，假装没发生',
+        effects:{m:-20,h:-10},flags:['suppressed_harassment'],
+        result:'你回到宿舍，洗了一个很长的澡。水很烫，皮肤发红。你没有告诉任何人。\n\n第二天他在走廊上跟你打招呼，笑得很正常。你也笑了。\n\n你发现自己学会了一件事：把一些东西锁起来，放在心里最深的抽屉里。你知道那个抽屉迟早会满。\n\n但不是今天。今天你只想正常地活过去。'}
+    ]
+  },
+  {id:'e17',pool:4,age:22,title:'考研还是就业',
+    cond:()=>true,priority:7,
+    text:'大四秋天。室友们分成了两派：考研的每天泡图书馆，找工作的每天赶面试。\n\n你夹在中间。你想考研——但你妈说"女孩子读那么多书嫁不出去"。你想工作——但你知道本科学历在你的专业里越来越不够用。\n\n截止日期在逼近。你还没决定。',
+    choices:[
+      {text:'考研。这是我想要的。',
+        effects:{a:15,w:-10,m:10},flags:['chose_grad_school'],
+        result:'你在报名表上点了"确认"。\n\n你妈打电话来的时候，你说："妈，我读书不是为了嫁不嫁得出去。"\n\n她叹了口气。在她的世界里，你在做一件危险的事。在你的世界里，你在做唯一正确的事。\n\n接下来的三个月，你的生活只剩下书本和泡面。但每一页翻过去，你都觉得自己离想要的生活更近了一步。'},
+      {text:'先工作，赚钱，想清楚再说',
+        effects:{w:10,m:5},flags:['chose_work_first'],
+        result:'你开始投简历。秋招像一场战争——你投了47份简历，收到8个面试，拿到2个offer。\n\n你选了其中一个。不是最好的，但够用。你跟自己说：先站稳脚跟，以后还可以再考。\n\n你不确定"以后"是多久。但你至少知道，你不想让经济依赖成为你做所有选择的前提。'},
+      {text:'GAP半年，想清楚自己到底要什么',
+        effects:{m:15,w:-15,c:-5},flags:['took_gap'],
+        result:'你做了一个所有人都不理解的决定：什么都不做。\n\n半年里，你打了零工、看了四十本书、去了两座城市、在咖啡馆里写了厚厚一本日记。\n\n你妈说你疯了。你室友觉得你在逃避。但在某个普通的下午，你坐在陌生城市的公园长椅上，忽然知道了自己想做什么。\n\n有时候，停下来不是浪费时间。停下来是在等自己的灵魂跟上脚步。'}
+    ]
+  },
+  {id:'e18',pool:4,age:22,title:'友情考验',
+    cond:()=>true,priority:5,
+    text:'你最好的朋友要结婚了。22岁，大四刚毕业。对象是她高中就在一起的男朋友。\n\n她兴奋地给你打电话。你……不知道该说什么。你不是不祝福她，但你隐约觉得太早了。而且她曾经说过想出国读书。\n\n"你不替我高兴吗？"她在电话那头问。',
+    choices:[
+      {text:'「我替你高兴。但我想问你一个问题——出国的梦想呢？」',
+        effects:{m:10,c:-5},flags:['questioned_friend_marriage'],
+        result:'电话那头沉默了很久。\n\n"结了婚也可以出国啊。"\n\n你听出了她的语气——她不确定。但她做了决定，而你能做的只是确保她听到了自己内心的声音。\n\n你最终去了她的婚礼。你穿了她最喜欢的颜色。在她抛花束的时候，你哭了——不是因为感动，是因为你想起你们17岁时说的话："我们要去看全世界。"'},
+      {text:'全力支持，帮她准备婚礼',
+        effects:{c:15,m:-5},flags:['supported_friend_marriage'],
+        result:'你帮她选婚纱、订酒店、做请帖。你把那个"太早了"的念头吞了下去。\n\n婚礼那天很美。她笑得很幸福。你在台下鼓掌，心里有一种奇怪的感觉——像是高兴和担心搅在一起。\n\n你问自己：你是在替她担心，还是因为她的选择让你质疑了自己的？'},
+      {text:'诚实说：我觉得有点早，但这是你的人生',
+        effects:{m:10,c:5},flags:['honest_friend'],
+        result:'「我觉得22岁结婚有点早。但这是你的人生，你开心就好。我永远站在你这边。」\n\n她哭了。不是因为生气，是因为——"你是唯一一个跟我说实话的人。"\n\n原来所有人要么是反对，要么是敷衍地祝福。只有你说了真话，同时没有离开。\n\n你突然理解了：真正的友情不是永远同意对方，是敢说不，还留在原地。'}
+    ]
+  },
+  {id:'e19',pool:4,age:22,title:'集体记忆',
+    cond:()=>hasFlag('documented_bias'),priority:8,
+    text:'你大一建的那个"我们的不方便"群，现在有了两百多人。有人提议：把这些故事整理成一份匿名报告，提交给学校。\n\n你犹豫了。因为你知道一旦提交，可能会引起很大的反响——也可能会引火烧身。',
+    choices:[
+      {text:'做。整理报告，提交学校。',
+        effects:{m:20,c:10,w:-5},flags:['submitted_report'],
+        result:'你们花了两周整理了一份36页的报告。匿名的声音汇成了一篇文档。\n\n学校的回应是"高度重视"。然后是沉默。然后是一个新成立的"性别平等委员会"。\n\n你不知道这个委员会会不会真的做事。但你知道，236个女生的声音变成了白纸黑字，存在在那里了。存在，就是一种力量。'},
+      {text:'匿名发到社交媒体上',
+        effects:{m:15,c:-5},flags:['went_public'],
+        result:'报告在网上传开了。阅读量十万加。评论区两极分化。\n\n学校紧急约你"谈谈"。你说你什么都不知道。他们不信，但没有证据。\n\n你在幕后看着那些故事被讨论、被转发、被骂、也被支持。你的名字不在任何地方，但你知道你做了什么。\n\n有些改变不需要英雄，只需要有人按下"发送"。'},
+      {text:'犹豫之后决定不发。但把资料保存好。',
+        effects:{m:-5,c:5},flags:['held_report'],
+        result:'你把文档加密，存在了三个地方。\n\n你告诉群里的人："时机还没到。但我们的记录不会消失。"\n\n有人失望，有人理解。你不确定自己是"谨慎"还是"懦弱"。但你知道，有些子弹需要等对的时机发射。\n\n而你手里，至少有子弹了。'}
+    ]
+  },
+
+  // ===== POOL 5: 22-23岁 求职/初入职场 (events 20-24) =====
+  {id:'e20',pool:5,age:22,title:'面试的隐形门槛',
+    cond:()=>true,priority:10,
+    text:'面试。你穿了准备了三天的衣服，做了二十页的公司调研。前三十分钟聊得很好。然后面试官放下笔，笑着问：\n\n「你有男朋友吗？」\n「打算什么时候结婚？」\n「结了婚还会继续工作吗？」\n\n你知道这些问题违法。但你也知道你需要这份工作。',
+    choices:[
+      {text:'微笑回答：我的个人规划不会影响工作表现',
+        effects:{m:10,w:10,c:-5},flags:['diplomatically_answered'],
+        result:'你微笑着完美地避开了陷阱。面试官点了点头。\n\n你拿到了offer。但从签合同的第一天起，你就知道——这家公司把你当成一个有"保质期"的员工。\n\n结婚生育那道倒计时，不是你设的，但它一直在背景里转着。'},
+      {text:'直说：这些问题与岗位无关，我拒绝回答',
+        effects:{m:20,w:-15},flags:['refused_illegal_q'],
+        result:'面试官的笑僵住了。"我们只是了解一下……"\n\n你站起来，说了声谢谢，走了。\n\n在电梯里，你盯着下行的数字，心跳很快。你可能失去了一个offer，但你保住了一种东西——你对自己的尊重。\n\n三天后，一个小公司的HR联系了你。她说："看到了你在某论坛上的帖子（你没发过），有人转述了你的经历。我们需要这样的人。"'},
+      {text:'编一个让他们放心的答案',
+        effects:{m:-10,w:5},flags:['performed_at_interview'],
+        result:'"暂时没有男朋友，短期内没有结婚的打算，工作是我现阶段的重心。"\n\n每一个字都是假的。或者说，每一个字都是他们想听的。\n\n你拿到了offer。但在签合同的时候，你忽然想到：你到底还要假装多少次，才能换来一个"正常"的机会？'}
+    ]
+  },
+  {id:'e21',pool:5,age:23,title:'催婚',
+    cond:()=>true,priority:6,
+    text:'过年回家。\n\n饭桌上，你二姨拉着你的手说："二十三了，该找了。"\n你妈接话："我同事的女儿比你小一岁，孩子都有了。"\n你爸沉默了一会儿，说了一句更重的："你让家里怎么跟外面的人交代？"\n\n外面的人。不知道名字的人。他们的"交代"比你的人生更重要。',
+    choices:[
+      {text:'「我的人生不需要跟外面的人交代。」',
+        effects:{m:20,c:-15},flags:['refused_marriage_pressure'],
+        result:'饭桌炸了。你妈放下了筷子。你二姨的笑容消失了。你爸的脸色沉下来。\n\n那顿饭没吃完。你在自己房间里坐了一个小时，听到客厅里他们在小声讨论你"越来越叛逆"。\n\n你打开手机，在备忘录里写了一行字："23岁。我选择让他们失望，好过让自己失望。"'},
+      {text:'敷衍应付过去',
+        effects:{m:-10},flags:['endured_pressure'],
+        result:'你笑了笑。"嗯，在看了。"\n\n你二姨立刻说她有个朋友的儿子，条件不错。你妈眼睛亮了。\n\n你低头吃饭，嘴里嚼着什么味道都没有。你发现"敷衍"是有成本的——每一次敷衍，他们就以为你同意了，下次逼得更紧。'},
+      {text:'认真谈：我现在的目标是事业，请你们相信我',
+        effects:{m:10,c:5},flags:['career_talk_family'],
+        result:'你放下筷子，认认真真地说了十分钟。你说了你的工作、你的计划、你对未来的想法。\n\n他们听了。\n\n你妈说："那你事业也稳定了，男朋友也该找了。"\n\n你发现了逻辑的漏洞：不管你说什么，他们的结论都是一样的。但至少你说了。至少你知道，自己不是"没想法"，只是想法跟他们不一样。'}
+    ]
+  },
+  {id:'e22',pool:5,age:23,title:'租房',
+    cond:()=>true,priority:4,
+    text:'你在新城市找房子。中介带你看了五套，每一套都有问题：太贵、太远、隔音差、室友抽烟。\n\n第六套还行，但房东是个中年男人，他上下打量了你一眼说："单身女孩啊？不要带男人回来。还有，晚上别穿太少，楼里都是男的。"\n\n他以为这是"好心提醒"。你全身发冷。',
+    choices:[
+      {text:'不租了。继续找。',
+        effects:{w:-10,m:10,h:5},flags:['kept_looking_apt'],
+        result:'你说"我再看看"，走了。\n\n继续找了两周。住在青旅里，每天背着行李看房。最终找到了一间小得可怜但干净的房间，房东是一对老夫妻，阿姨帮你晒了被子。\n\n搬进去那天，你在十二平米的空间里转了一圈，觉得整个世界都是你的。'},
+      {text:'忍了。先住下来，有钱了再换。',
+        effects:{w:5,m:-10,h:-5},flags:['settled_bad_apt'],
+        result:'你签了合同。\n\n每天回家的路上，你会不自觉地加快脚步。进门之后先锁门、反锁、再拿衣架顶住门把手。你在自己的"家"里，像一只随时准备逃跑的动物。\n\n你知道这不是长久之计。但钱就这么多。安全感，原来也是需要用钱买的东西。'},
+      {text:'找朋友合租',
+        effects:{c:10,w:5,m:5},flags:['found_roommate'],
+        result:'你打了个电话给大学同学："来合租吗？"\n\n她正好也在找房。你们找了一个两居室，有阳台，有阳光，有锁好的门。\n\n搬进去那天，你们坐在地板上吃外卖，她说："我们终于有自己的地方了。"\n\n你说："嗯。我们的。"'}
+    ]
+  },
+  {id:'e23',pool:5,age:23,title:'公共场所',
+    cond:()=>true,priority:5,
+    text:'晚上十点。你在地铁上，旁边的男人点了一根烟。\n\n你说了一句："这里不能吸烟。"\n\n他慢慢转过头，站起来，用身体压近你。他骂了一句很难听的话。整节车厢的人，没有一个开口。\n\n车厢晃动着。他的烟灰落在你的鞋上。',
+    choices:[
+      {text:'继续对视，拿出手机拍视频',
+        effects:{m:15,h:-5,c:5},flags:['filmed_harassment'],
+        result:'你的手在抖，但你举起了手机。\n\n他看到镜头，眼神变了。"你拍什么拍？"但他退后了一步。\n\n到站之后你下了车，在站台上蹲了十分钟才站起来。肾上腺素退去之后，恐惧才真正到来。\n\n但视频存在了你的手机里。有时候，一个小小的镜头就是一面盾牌。'},
+      {text:'沉默，换到另一节车厢',
+        effects:{m:-10,h:-5},flags:['retreated_subway'],
+        result:'你站起来，走了。在两节车厢之间的连接处，你的眼泪掉了下来。\n\n不是因为害怕。是因为愤怒，无处安放的愤怒。你做了"正确的事"——提醒他不要吸烟，换来的是威胁。\n\n回家之后你锁上门，在备忘录里写了一句话："我很愤怒。但我没有错。"'},
+      {text:'大声问车厢里的人：「有人看见了吗？」',
+        effects:{c:10,m:10},flags:['called_witnesses'],
+        result:'你的声音在车厢里震荡。所有人都低着头。\n\n然后，角落里，一个戴眼镜的女生站了起来。"我看见了。"\n\n又一个女生站起来。"我也是。"\n\n那个男人看看周围，掐灭了烟，骂了一句，到站就走了。\n\n那天晚上，戴眼镜的女生加了你的微信。她说：「谢谢你先开口。」\n\n有些勇气是会传染的。'}
+    ]
+  },
+  {id:'e24',pool:5,age:23,title:'薪资谈判',
+    cond:()=>true,priority:3,
+    text:'你发现做同样工作的男同事，工资比你高20%。你找HR问了——HR说："他有相关经验。"\n\n你也有。你的KPI比他高。但你入职的时候，HR问你"期望薪资"，你报了一个保守的数字。而他，报了一个你不敢报的数字。',
+    choices:[
+      {text:'要求调薪，拿出数据说话',
+        effects:{w:15,m:15,c:-5},flags:['negotiated_salary'],
+        result:'你做了一份Excel——你的KPI、你的项目成果、市场同岗位薪资。你把它打印出来放在HR桌上。\n\n"根据这些数据，我认为我的薪资应该调整。"\n\nHR看了你五秒钟。"我向上面反映。"\n\n两周后，你的薪资涨了15%。没有达到他的水平，但差距缩小了。你学到了一课：女生不是不能谈钱，是从来没人教我们谈钱。'},
+      {text:'记住这件事，但现在不是合适的时机',
+        effects:{m:-5,w:-5},flags:['delayed_salary'],
+        result:'你在心里记了一笔账。\n\n你没有马上去谈，因为你才入职三个月。但你开始在每一次项目结束后保存数据、记录成果。你在给自己攒筹码。\n\n你告诉自己：等半年，等一年，等你手上有足够的牌。\n\n你不知道你在等的那一天会不会来。但你的Excel里的数字，每天都在变长。'},
+      {text:'跟女同事们聊聊，看看是不是普遍现象',
+        effects:{c:15,m:10},flags:['salary_solidarity'],
+        result:'你小心翼翼地跟两个女同事聊了这件事。\n\n结果：她们的情况一模一样。\n\n三个人坐在公司楼下的奶茶店里，对着手机计算器算差额，越算越沉默。最后一个人说："我们一起去谈吧？"\n\n一个人谈是"矫情"，三个人谈是"数据"。'}
+    ]
+  },
+
+  // ===== POOL 6: 23-24岁 职场/独立 (events 25-29) =====
+  {id:'e25',pool:6,age:24,title:'玻璃天花板',
+    cond:()=>true,priority:10,
+    text:'你和一个男同事同时申请晋升。你的业绩更好。所有人都知道。\n\n但结果公布那天，晋升的是他。\n\n你的领导私下找你："你还年轻，再沉淀一下。而且你以后结婚生孩子，到时候……"\n\n他没说完。他不需要说完。你懂了。\n\n你的"以后"，在他眼里不是潜力，而是风险。',
+    choices:[
+      {text:'要求书面说明晋升标准',
+        effects:{m:15,w:-5,c:-10},flags:['demanded_transparency'],
+        result:'你给HR发了一封邮件，抄送了部门领导。措辞专业而冷静：\n\n"请提供本次晋升评估的具体标准和打分依据。"\n\n公司没有回复。但一周后，一个猎头联系了你——有人在行业群里提到了你。\n\n"听说你是那种会追问'为什么'的人。我们老板很喜欢这种人。"\n\n有时候，在一个错误的地方坚持，会把你带到正确的地方。'},
+      {text:'接受结果，但开始更新简历',
+        effects:{m:-5,w:5},flags:['started_looking'],
+        result:'你微笑着说"好的"。然后回到工位，打开了招聘网站。\n\n你用了一周时间更新简历。在"自我评价"那栏，你写了又删、删了又写。最后你写了一句话：\n\n"相信数据，相信实力，也相信自己值得更好的平台。"\n\n这不是逃跑。这是选择。'},
+      {text:'找到其他有相似遭遇的女同事，一起谈',
+        effects:{c:20,m:15},flags:['collective_action'],
+        result:'你发现你不是唯一一个。\n\n市场部的小林、产品部的阿玲、技术部的老王（是的，也有一个男同事，他说他看不下去了）——你们四个人约了一次下班后的谈话。\n\n你们整理了三年来的晋升数据：同一个级别，男性平均晋升时间是1.8年，女性是3.2年。\n\n你们把数据匿名发给了公司内部论坛。一周后，HR宣布成立"晋升公平性审查小组"。\n\n改变很慢。但它开始了。'}
+    ]
+  },
+  {id:'e26',pool:6,age:24,title:'生育选择',
+    cond:()=>true,priority:7,
+    text:'你的同龄人开始分化了：有人在晒娃，有人在晒offer。你的领导在会上说："这个项目要出差三个月，年轻妈妈们就算了。"\n\n你不是妈妈。但你感觉自己被归入了一个叫做"迟早会生"的分类。\n\n妈妈打电话来："冻卵的事你考虑了吗？"\n\n你甚至还没考虑过要不要孩子。但所有人都在替你考虑。',
+    choices:[
+      {text:'「我还没想好要不要孩子，但这是我自己的事。」',
+        effects:{m:15,c:-5},flags:['bodily_autonomy'],
+        result:'你妈说："你不年轻了。"\n\n你说："妈，我二十四。"\n\n你意识到在某些人的时间表里，你已经"晚了"。而在你自己的时间表里，你才刚刚开始。\n\n你没有做任何关于生育的决定。但你做了一个关于自己的决定：我的身体我的子宫我的人生，由我自己来安排时间表。'},
+      {text:'去做了一次全面的生育咨询',
+        effects:{h:5,w:-5,m:5},flags:['fertility_consult'],
+        result:'你去了医院。不是因为你想生孩子，是因为你想知道自己的选择。\n\n医生说了很多数据，关于卵子质量、冻卵费用、生育窗口期。你认真地做了笔记。\n\n走出医院的时候你想：了解自己的身体不等于服从别人的期待。知道自己有哪些选择，是自由的前提。'},
+      {text:'把精力放在工作上，不想这件事',
+        effects:{m:-5,a:5},flags:['avoided_fertility'],
+        result:'你把"生育"这两个字从脑海里推开了。你有项目要做、有报告要写、有会要开。\n\n但每次路过母婴店，每次刷到同学晒娃的朋友圈，那两个字就像弹簧一样弹回来。\n\n你不是不想面对，你是不知道怎么在"自己想要的"和"所有人期待的"之间找到一个你能接受的位置。'}
+    ]
+  },
+  {id:'e27',pool:6,age:24,title:'找到同类',
+    cond:()=>true,priority:5,
+    text:'你在网上偶然看到一个帖子。一个女生写了她在职场上被区别对待的经历，和你几乎一模一样。\n\n你往下滑，评论区有三千条。每一条都是一个女生的故事。有人在哭，有人在骂，有人在说"我以为只有我这样"。\n\n你的手指悬在评论框上。',
+    choices:[
+      {text:'写下你自己的故事',
+        effects:{m:15,c:10},flags:['shared_story'],
+        result:'你打了一段很长的字。你讲了你18岁的选择、你20岁的会议室、你22岁的面试。\n\n你犹豫了十秒钟，按下了发送。\n\n第二天醒来，有47个人给你点了"抱一下"。有人说："你写的就是我的人生。"\n\n你忽然明白：你以为你一个人走过来的那些路，其实有无数个她在同时走着。你们只是不知道彼此。现在知道了。'},
+      {text:'默默看完所有评论，不说话',
+        effects:{m:5,c:-5},flags:['silent_witness'],
+        result:'你一条一条地看。看了两个小时。眼泪不知道什么时候开始流。\n\n你没有留下任何评论。但你截图保存了十几条。\n\n在某些时刻，知道自己不是一个人，这件事本身就是一种力量。你不需要发出声音，你只需要知道声音存在。'},
+      {text:'把这个帖子转给你认识的女性朋友',
+        effects:{c:15,m:10},flags:['spread_awareness'],
+        result:'你把链接发给了八个人。\n\n五个人秒回："我也看到了。"两个人说："我哭了。"一个人说："这就是我，怎么有人写出来了？"\n\n那天晚上，你们九个人在群里聊到了凌晨三点。不聊八卦、不聊化妆品，聊的是你们共同经历过的、那些说不出口的时刻。\n\n九个人。九段不同的人生。同一种感受。这个群后来一直在——成了你最重要的精神根据地。'}
+    ]
+  },
+  {id:'e28',pool:6,age:24,title:'一间自己的房间',
+    cond:()=>G.stats.w>=40,priority:4,
+    text:'你攒了一笔钱。不多，但够在这座城市的边缘租一个属于自己的小房间。不用合租，不用看房东脸色，不用配合任何人的作息。\n\n你站在空荡荡的房间里，十五平米。一张床、一张桌子、一扇窗。\n\n阳光从窗户照进来，光柱里有灰尘在飞。你忽然想起弗吉尼亚·伍尔夫写的那句话。',
+    choices:[
+      {text:'在窗台上放一盆植物。这里是你的了。',
+        effects:{m:15,h:5},flags:['own_room_plant'],
+        result:'你去楼下花店买了一盆绿萝。老板说"好养活"。\n\n你把它放在窗台上，阳光正好照到叶子上。你坐在地板上，抱着膝盖看它。\n\n十五平米。属于你自己的十五平米。没有人的期待，没有人的评分，没有人的"为你好"。\n\n你终于有了一间自己的房间。'},
+      {text:'打电话给妈妈：我有自己的家了。',
+        effects:{c:10,m:10},flags:['own_room_mom'],
+        result:'电话响了三声。\n\n"妈，我有自己的房间了。"\n\n她沉默了一会儿。然后说："多大？"\n\n"十五平米。"\n\n"太小了。"\n\n你笑了。"是小。但是是我自己的。"\n\n她没说话。但你听到她在电话那头轻轻地叹了口气——那种带着骄傲的叹气，虽然她永远不会承认。'},
+      {text:'什么都不做。就坐在空房间里，安静地待一会儿。',
+        effects:{m:20},flags:['own_room_silence'],
+        result:'你坐在地板上。房间里只有你的呼吸声和窗外远远的车声。\n\n你想起18岁的自己，在那个由别人安排的教室里。你想起20岁的自己，在那个不喊你名字的实验室里。你想起22岁的自己，在那个问你"打算什么时候结婚"的面试间里。\n\n你走了六年，走到了这里。\n\n这个房间什么都没有。但它是你的。\n\n这就够了。'}
+    ]
+  },
+  {id:'e29',pool:6,age:24,title:'她问你',
+    cond:()=>true,priority:10,isEnding:true,
+    text:'某天，你的手机响了。是你的小表妹，今年刚上高三。\n\n她的声音有点紧张：「姐，我想问你一个问题。」\n\n「你说。」\n\n「女生……应该找个稳定的工作吗？老师和我妈都这么说。但我不想。可是我又怕我不想是因为我不懂事。」\n\n你拿着手机，愣住了。因为你想起来，六年前，你也问过同样的问题。',
+    choices:[
+      {text:'「稳定是假的。去找你真正想做的事。」',
+        effects:{m:10},flags:['ending_rebel'],
+        result:'她在电话那头安静了一会儿。\n\n"可是我不知道什么是我真正想做的。"\n\n"我24岁了，有时候也不知道。但'不知道'没关系。你只要记住一件事——不要让别人替你决定。"\n\n她嗯了一声。轻轻的。\n\n你不知道你的话会不会改变她。但你知道，在她18岁的某一天，有一个声音告诉她：你可以自己选。'},
+      {text:'「稳定也没什么不好。但别为了稳定放弃自己。」',
+        effects:{m:10},flags:['ending_balance'],
+        result:'你在电话里跟她说了很多。你说了你走过的弯路，也说了你做对的事。\n\n"稳定本身不是坏事。坏的是——如果你选了稳定，但心里住着一个永远在挣扎的自己。"\n\n她说："姐，你好厉害。"\n\n你笑了。"我不厉害。我只是摔了很多跤，学会了站起来。"'},
+      {text:'「我也不知道。但我想陪你一起想清楚。」',
+        effects:{m:10,c:5},flags:['ending_together'],
+        result:'你说完这句话之后，你们聊了一个小时。\n\n你没有给她任何答案。你只是听她说——说她喜欢什么、害怕什么、期待什么。你发现她和18岁的你一样迷茫，但也一样闪亮。\n\n挂电话之前她说："姐，以后我能经常找你聊天吗？"\n\n"当然可以。"\n\n你放下手机，看着窗外。天快黑了。但你不害怕了。'}
+    ]
+  }
+];
+
+// ==================== CROSS-TIME DIALOGUES ====================
+const DIALOGUES = {
+  h: {
+    name:'萧红',
+    color:'#6B2737',
+    quotes:[
+      {cond:()=>true,text:'我这一生，没有一处是安稳的落脚地。但我写作的时候，我是活着的。\n\n你现在这具身体，它在告诉你什么？别堵住它的嘴。'},
+      {cond:()=>true,text:'我这一生，没有一处是安稳的落脚地。但我写作的时候，我是活着的。\n\n你现在这具身体，它在告诉你什么？别堵住它的嘴。'},
+      {cond:()=>G.stats.h<=30,text:'我也是这样熬过来的。身体垮了的时候，笔还在动。后来我才知道，笔也是靠这具身体握着的。\n\n你比我聪明。你还来得及停下来。'},
+      {cond:()=>hasFlag('took_rest'),text:'你舍得让自己休息。这件事，我一辈子都没学会。\n\n你替我做了一个我做不到的选择。谢谢你。'}
+    ]
+  },
+  s: {
+    name:'西蒙·德·波伏娃',
+    color:'#4A5568',
+    quotes:[
+      {cond:()=>true,text:'女人不是天生的，而是后天被塑造的。你在每一个选择里，都在打碎一个模具。\n\n继续打碎。'},
+      {cond:()=>hasFlag('defied_family')||hasFlag('refused_marriage_pressure'),text:'你对你的家庭说了"不"。这不是叛逆，这是存在。\n\n一个人只有在说"不"的时候，才真正开始说"是"——对自己说"是"。'},
+      {cond:()=>hasFlag('chose_grad_school')||hasFlag('negotiated_salary'),text:'你选择了知识和尊严。在这个世界上，女性的每一步独立都是一场小型革命。\n\n你正在革命。'}
+    ]
+  },
+  w: {
+    name:'弗吉尼亚·伍尔夫',
+    color:'#5B4A6A',
+    quotes:[
+      {cond:()=>true,text:'一个女人要写小说，必须有钱和一间自己的房间。\n\n你可能还没有房间。但你已经在找了。这就够了。'},
+      {cond:()=>hasFlag('own_room_plant')||hasFlag('own_room_mom')||hasFlag('own_room_silence'),text:'你有了你的房间。\n\n我在另一个世纪为你写下了这句话。现在你把它活成了真的。'},
+      {cond:()=>hasFlag('financially_independent'),text:'经济独立。这两个词听起来平淡，但它们是一切自由的地基。\n\n你在铺地基了。好好铺。'}
+    ]
+  },
+  y: {
+    name:'上野千鹤子',
+    color:'#8B4513',
+    quotes:[
+      {cond:()=>true,text:'女性主义，就是不要在受苦的时候努力说服自己"这是幸福"。\n\n你的不舒服是真实的。永远相信自己的感受。'},
+      {cond:()=>hasFlag('spoke_in_meeting')||hasFlag('demanded_transparency'),text:'你开口了。在那些让你闭嘴的场合里，你开口了。\n\n权力最害怕的不是拳头，是声音。你的声音在回响。'},
+      {cond:()=>hasFlag('collective_action')||hasFlag('salary_solidarity'),text:'一个人是"矫情"，一群人是"数据"。\n\n你找到了你的同伴。一个人的力量像蜡烛，一群人的力量像野火。'}
+    ]
+  },
+  z: {
+    name:'张爱玲',
+    color:'#B8860B',
+    quotes:[
+      {cond:()=>true,text:'生命是一袭华美的袍，爬满了虱子。\n\n但你至少可以选择——那袍子的颜色，由你自己挑。'},
+      {cond:()=>hasFlag('broke_up_first')||hasFlag('left_controlling_rel'),text:'我在感情里吃过的亏，你不必再吃。\n\n你转身走了。这不是逃跑。这是你这辈子最勇敢的一步。'},
+      {cond:()=>hasFlag('stayed_controlling'),text:'我懂。我也在一段不该留的感情里留了太久。\n\n但我想告诉你：门一直在那里。你随时可以推开。'}
+    ]
+  },
+  l: {
+    name:'林徽因',
+    color:'#2F5233',
+    quotes:[
+      {cond:()=>true,text:'人们记住我的诗。但我一辈子都在做建筑。\n\n不要让别人定义你是什么。你做的事情，会定义你自己。'},
+      {cond:()=>hasFlag('stayed_science')||hasFlag('fought_for_lab'),text:'理科、工科、实验室。他们说这些地方不属于女人。\n\n我在战火里测量古建筑的时候，也有人这么说。但我的测量数据还在，他们的话早就没人记得了。'},
+      {cond:()=>hasFlag('named_self'),text:'你说了你的名字。\n\n一个女人在世界上刻下自己的名字，比你以为的要难，也比你以为的要重要。'}
+    ]
+  }
+};
+
+// ==================== GAME FLOW ====================
+
+function getEventsForYear(poolNum) {
+  const poolEvents = EVENTS.filter(e => e.pool === poolNum && e.cond());
+  poolEvents.sort((a,b) => b.priority - a.priority);
+  return poolEvents;
+}
+
+function pickEventForYear(poolNum) {
+  const available = getEventsForYear(poolNum);
+  if (available.length === 0) return null;
+  // pick highest priority, with some randomness
+  const top = available.slice(0, Math.min(3, available.length));
+  return top[Math.floor(Math.random() * top.length)];
+}
+
+function startGame() {
+  G.year = 0;
+  G.history = [];
+  showDialogue(0);
+}
+
+function getDialogueForYear(yearIdx) {
+  const keys = Object.keys(DIALOGUES);
+  const key = keys[yearIdx % keys.length];
+  const d = DIALOGUES[key];
+  // find best matching quote
+  let bestQuote = d.quotes[0];
+  for (let i = d.quotes.length - 1; i >= 0; i--) {
+    if (d.quotes[i].cond()) {
+      bestQuote = d.quotes[i];
+      break;
+    }
+  }
+  return { name: d.name, color: d.color, text: bestQuote.text };
+}
+
+function showDialogue(yearIdx) {
+  const d = getDialogueForYear(yearIdx);
+  const ageLabels = ['18岁 · 高三', '19岁 · 大一', '20岁 · 大二大三', '21岁 · 大三大四', '22-23岁 · 求职', '23-24岁 · 独立'];
+  const label = yearIdx < ageLabels.length ? ageLabels[yearIdx] : '';
+
+  render(`
+    <div class="dialogue-screen">
+      ${progressHTML(yearIdx)}
+      <div class="context">${label} · 序幕</div>
+      <div class="speaker" style="color:${d.color}">${d.name}</div>
+      <div class="quote">"${d.text.replace(/\n/g,'<br>')}"</div>
+      <button class="btn" onclick="showYearEvent(${yearIdx})">继续</button>
+    </div>
+  `);
+}
+
+function showYearEvent(yearIdx) {
+  const poolNum = yearIdx + 1;
+  const event = pickEventForYear(poolNum);
+  if (!event) {
+    // fallback
+    advanceYear(yearIdx);
+    return;
+  }
+
+  const ageLabels = ['18','19','20','21','22-23','23-24'];
+  const age = ageLabels[yearIdx] || '24';
+  const yearDescs = ['高三 · 这一年你站在起点','大一 · 新的世界和旧的规则','大二大三 · 你开始看清一些东西','大三大四 · 选择越来越重','求职 · 社会给你上了第一课','独立 · 你开始成为你自己'];
+
+  // Handle dynamic text
+  let eventText = event.text;
+  if (typeof eventText === 'function') eventText = eventText();
+
+  let choicesHTML = '';
+  event.choices.forEach((ch, i) => {
+    choicesHTML += `<button class="choice-btn" onclick="makeChoice(${yearIdx},'${event.id}',${i})">
+      <span class="choice-label">选项 ${['一','二','三'][i]}</span>
+      ${ch.text}
+    </button>`;
+  });
+
+  // butterfly effect notes
+  let butterflyHTML = '';
+  const bNotes = [];
+  if (hasFlag('double_life') && event.id === 'e15') bNotes.push('🦋 你在18岁埋下的秘密，现在到了揭晓的时刻');
+  if (hasFlag('stayed_controlling') && event.id === 'e14') bNotes.push('🦋 你18岁的那段感情，从未真正结束');
+  if (hasFlag('documented_bias') && event.id === 'e19') bNotes.push('🦋 你大一建的那个群，长成了意想不到的样子');
+  if (hasFlag('stayed_science') && event.id === 'e12') bNotes.push('🦋 你当初坚持留在理科的选择，把你带到了这里');
+  if (bNotes.length > 0) {
+    butterflyHTML = bNotes.map(n => `<div class="butterfly">${n}</div>`).join('');
+  }
+
+  render(`
+    <div class="year-header">
+      ${progressHTML(yearIdx)}
+      <div class="age">${age}</div>
+      <div class="year-desc">${yearDescs[yearIdx] || ''}</div>
+    </div>
+    ${statsHTML()}
+    <div class="section-title">${event.title}</div>
+    ${butterflyHTML}
+    <div class="narrative">${eventText.replace(/\n/g,'<br>')}</div>
+    <div class="divider"></div>
+    ${choicesHTML}
+  `);
+}
+
+function makeChoice(yearIdx, eventId, choiceIdx) {
+  const event = EVENTS.find(e => e.id === eventId);
+  const choice = event.choices[choiceIdx];
+
+  // apply effects
+  const changes = applyStats(choice.effects || {});
+
+  // set flags
+  if (choice.flags) choice.flags.forEach(f => setFlag(f));
+
+  // record history
+  G.history.push({ eventId, choiceIdx, yearIdx });
+
+  // check for butterfly connections
+  let flagNotes = [];
+  if (choice.flags) {
+    choice.flags.forEach(f => {
+      const connections = {
+        'double_life': '这个秘密会在未来等着你……',
+        'stayed_controlling': '这段关系的影响，远比你以为的深……',
+        'documented_bias': '这些声音在积累。总有一天会被听到。',
+        'spoke_against_rating': '你的勇气被某个人记住了。',
+        'financially_independent': '经济独立的种子，会在以后开花。',
+        'has_evidence': '证据在手里。它会在你需要的时候保护你。',
+        'collective_action': '集体的力量开始凝聚了。',
+        'submitted_report': '白纸黑字的记录，谁也无法抹去。',
+        'went_arts': '文科的路上，你会遇到不同的风景。',
+        'stayed_science': '理科这条路很难。但你选了。',
+        'broke_up_first': '你学会了转身。这个能力会在以后救你。',
+        'fought_for_lab': '你说了三遍"我可以"。以后你只需要说一遍。'
+      };
+      if (connections[f]) flagNotes.push(connections[f]);
+    });
+  }
+
+  let flagHTML = flagNotes.length > 0
+    ? flagNotes.map(n => `<div class="flag-note">${n}</div>`).join('')
+    : '';
+
+  render(`
+    <div class="result-card">
+      <div class="result-text">${choice.result.replace(/\n/g,'<br>')}</div>
+      ${flagHTML}
+    </div>
+    ${statsHTML(changes)}
+    <button class="btn btn-main" onclick="advanceYear(${yearIdx})">继续走下去</button>
+  `);
+}
+
+function advanceYear(yearIdx) {
+  const nextYear = yearIdx + 1;
+  if (nextYear >= 6) {
+    showPreEnding();
+  } else {
+    showDialogue(nextYear);
+  }
+}
+
+// ==================== ENDING SYSTEM ====================
+function calculateEnding() {
+  const s = G.stats;
+  const total = s.h + s.w + s.c + s.a + s.m;
+
+  // Ending categories based on flags and stats
+  let endingType = 'survivor'; // default
+
+  const rebellionFlags = ['defied_family','refused_marriage_pressure','spoke_in_meeting','demanded_transparency','refused_harassment','rejected_joke','spoke_against_rating','fought_for_lab','refused_illegal_q'];
+  const rebellionCount = rebellionFlags.filter(f => hasFlag(f)).length;
+
+  const solidarityFlags = ['documented_bias','collective_action','salary_solidarity','found_women_sci','submitted_report','went_public','spread_awareness','called_witnesses','shared_story'];
+  const solidarityCount = solidarityFlags.filter(f => hasFlag(f)).length;
+
+  const selfCareFlags = ['took_rest','rest_day','own_room_plant','own_room_silence','own_room_mom','balanced_work','left_controlling_rel','broke_up_first'];
+  const selfCareCount = selfCareFlags.filter(f => hasFlag(f)).length;
+
+  const suppressionFlags = ['suppressed_harassment','stayed_controlling','endured_pressure','forced_laugh','retreated_online','retreated_subway','family_silence','swallowed'];
+  const suppressionCount = suppressionFlags.filter(f => hasFlag(f)).length;
+
+  if (rebellionCount >= 3 && s.m >= 60) endingType = 'fire';
+  else if (solidarityCount >= 3) endingType = 'wave';
+  else if (selfCareCount >= 3 && s.h >= 50) endingType = 'garden';
+  else if (suppressionCount >= 3 && s.m <= 35) endingType = 'glass';
+  else if (s.m >= 70) endingType = 'awake';
+  else if (total >= 280) endingType = 'balance';
+  else if (s.m <= 25 && s.h <= 25) endingType = 'edge';
+
+  return endingType;
+}
+
+const ENDINGS = {
+  fire: {
+    title: '燃烧者',
+    text: '你一路走来，从来没有安静过。\n\n你顶撞了老师、质疑了制度、在会议室里夺回了自己的声音。你被叫过"难搞的女人""太敏感""不好相处"。\n\n但你也被另一些人叫过"勇敢""清醒""我想成为的那种人"。\n\n你24岁了。你的名字可能不在任何权力名单上。但在某些人心里，你的名字意味着：\n\n——原来可以不忍。\n——原来可以说不。\n——原来一个人真的可以不一样。\n\n火会烧伤自己。但火也会照亮别人。你选择了燃烧。',
+    color: '#c4956a'
+  },
+  wave: {
+    title: '造浪者',
+    text: '你没有独自战斗。\n\n从大一那个47人的群聊，到后来和女同事们一起坐在奶茶店算差额——你一直在做同一件事：找到同类，然后一起发出声音。\n\n一个人说"不公平"是抱怨。十个人说"不公平"是数据。一百个人说"不公平"是历史。\n\n你24岁了。你身边有了一群人。她们的故事和你不同，但痛点一样。你们在各自的位置上，做着微小的改变。\n\n你不确定这些改变够不够。但你确定一件事：她们让你不再孤独。\n\n浪是一个人掀不起来的。但你可以是第一滴水。',
+    color: '#4b6b8a'
+  },
+  garden: {
+    title: '种花的人',
+    text: '你学会了一件很多人一辈子都学不会的事：\n\n照顾自己。\n\n你在透支的边缘停下来过。你在失控的关系里转身走掉过。你给自己放过假、做过体检、在空荡荡的房间里坐着什么都不做。\n\n这些事听起来不够"伟大"。但你知道它们有多难。在一个要求女性永远奉献、永远坚强、永远微笑的世界里，对自己温柔是一种革命。\n\n你24岁了。你的窗台上可能有一盆植物。你每天浇水，看它长出新叶。\n\n你也是那株植物。你一直在生长。只是没人注意到。\n\n但你自己知道。这就够了。',
+    color: '#5a7a5a'
+  },
+  glass: {
+    title: '裂缝中的光',
+    text: '你忍了很多。\n\n你在饭桌上笑过、在会议室里沉默过、在出租车后座哭过、在深夜把所有的不舒服锁进抽屉里。你以为忍耐是一种能力。\n\n但忍耐是有极限的。你的身体知道，你的情绪知道。\n\n你24岁了。你还站着。这本身就很了不起。不是每个人都能在这么多压力下还站着的。\n\n但我想告诉你一件事——你不需要永远站着。坐下来也可以。蹲下来也可以。让别人帮你扶一把也可以。\n\n你的裂缝不是弱点。\n\n莱昂纳德·科恩说过：万物皆有裂缝，那是光照进来的地方。\n\n你的光还在。',
+    color: '#9e4b4b'
+  },
+  awake: {
+    title: '觉醒者',
+    text: '六年前你不知道自己是谁。\n\n现在你也不完全知道。但你知道了一件更重要的事：你不是他们说的那个人。\n\n你不是"该找对象了的那个女孩"。不是"开不起玩笑的那个女生"。不是"不太方便的那个女同学"。不是某个数字、某个标签、某个别人画好的人形。\n\n你是你自己。这三个字花了你六年。但它值。\n\n你24岁了。前面的路还很长。但你走的每一步，都是你自己选的。\n\n没有任何人可以替你活这一辈子。\n\n这是最可怕的事。\n\n也是最好的事。',
+    color: '#6b5278'
+  },
+  balance: {
+    title: '走钢丝的人',
+    text: '你没有极端地冲撞，也没有完全地妥协。你在每一个选择里寻找平衡——有时候偏左一点，有时候偏右一点。\n\n有人说你"圆滑"。有人说你"聪明"。你自己知道，你只是在努力活下去的同时，不丢掉自己。\n\n这很难。比选择任何一个极端都难。\n\n你24岁了。你的五项数值都还过得去。没有哪一项特别高，也没有哪一项崩塌。你活着、工作着、维持着关系、照顾着身体、清醒着头脑。\n\n在这个对女性要求如此苛刻的世界里，"还过得去"已经是一种了不起的成就了。\n\n继续走你的钢丝。\n\n你比你以为的稳。',
+    color: '#8a7a3a'
+  },
+  edge: {
+    title: '悬崖边的花',
+    text: '你很累了。\n\n你的身体在报警，你的心在流血。这六年里你承受了太多，而支撑你的东西太少。\n\n我不想美化你的痛苦。我不想说"这会让你更强大"或者"一切都会好的"。因为有些痛苦就是痛苦，没有意义。\n\n但我想说——你还在这里。\n\n你没有消失。你没有放弃。在所有那些想放弃的夜晚，你都熬过来了。\n\n24岁。你还很年轻。你的故事不是到这里就结束了。\n\n如果你正在经历这些，请联系：\n全国心理援助热线：400-161-9995\n生命热线：400-821-1215\n\n你值得被帮助。你值得被爱。你值得活下去。',
+    color: '#7a746b'
+  },
+  survivor: {
+    title: '幸存者',
+    text: '你活过来了。\n\n这六年不算太好，也不算太坏。你做了一些你骄傲的选择，也做了一些你后悔的选择。你受过伤，也愈合过。你失去过，也得到过。\n\n你24岁了。你还不知道未来会怎样。但你知道一件事——你走到了这里。靠你自己。\n\n在一个对女性充满隐形障碍的世界里，你走了六年。你没有成为任何人眼中"应该成为"的样子。\n\n你成为了你自己的样子。\n\n这就是全部的胜利。',
+    color: '#8b6f5e'
+  }
+};
+
+function showPreEnding() {
+  render(`
+    <div class="dialogue-screen">
+      <div class="divider"></div>
+      <div class="narrative" style="text-align:center;color:var(--dim)">
+        六年过去了。<br><br>
+        你从18岁走到了24岁。<br><br>
+        在这六年里，你做了${G.history.length}个选择。<br>
+        每一个选择都在塑造你。<br><br>
+        现在，让我们看看——<br>
+        你成为了谁。
+      </div>
+      <div class="divider"></div>
+      <button class="btn btn-main" onclick="showEnding()">揭晓</button>
+    </div>
+  `);
+}
+
+function showEnding() {
+  const type = calculateEnding();
+  const ending = ENDINGS[type];
+
+  render(`
+    <div class="ending-screen">
+      <div class="section-title">你的六年 · 结局</div>
+      <div class="ending-title" style="color:${ending.color}">「${ending.title}」</div>
+      <div class="ending-text">${ending.text.replace(/\n/g,'<br>')}</div>
+      ${statsHTML()}
+      <div class="divider"></div>
+      <button class="btn" onclick="showScoreReveal()">最终评分</button>
+    </div>
+  `);
+}
+
+function showScoreReveal() {
+  // build history summary
+  let historyHTML = '<div style="text-align:left;margin-bottom:32px">';
+  const ageLabels = ['18岁','19岁','20岁','21岁','22-23岁','23-24岁'];
+  G.history.forEach((h, i) => {
+    const event = EVENTS.find(e => e.id === h.eventId);
+    if (event) {
+      historyHTML += `<div style="margin-bottom:12px;font-size:12px;color:var(--dim)">
+        <span style="color:var(--accent)">${ageLabels[i] || ''}</span> · ${event.title}<br>
+        <span style="color:var(--text);font-size:11px">${event.choices[h.choiceIdx].text}</span>
+      </div>`;
+    }
+  });
+  historyHTML += '</div>';
+
+  render(`
+    <div class="score-screen">
+      <div class="section-title">关于评分</div>
+      <div class="fake-score" style="text-decoration:line-through;color:#333">综合评分：--</div>
+      <div class="reveal">
+        这个游戏没有评分。<br><br>
+        因为没有人有资格<br>给你的人生打分。<br><br>
+        <span style="color:var(--accent)">你做的每一个选择</span><br>
+        都是你在那个处境里<br>
+        能做的最好的选择。<br><br>
+        没有"正确答案"。<br>
+        只有"你的答案"。<br><br>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title" style="margin-top:24px">你的六年回顾</div>
+      ${historyHTML}
+      ${statsHTML()}
+      <div class="divider"></div>
+      <div style="font-size:12px;color:var(--dim);line-height:2;margin-bottom:32px;text-align:center">
+        这个游戏里的每一个事件<br>
+        都来自真实的女性经历。<br><br>
+        如果你觉得某个选择"太真实了"——<br>
+        是的。因为它本来就是真的。<br><br>
+        <span style="color:var(--accent)">把这个游戏分享给一个女生。</span><br>
+        她会懂的。
+      </div>
+      <button class="btn btn-main" onclick="showTitle()">重新开始</button>
+      <button class="btn" onclick="showCredits()">制作说明</button>
+    </div>
+  `);
+}
+
+function showCredits() {
+  render(`
+    <div class="dialogue-screen">
+      <div class="section-title">制作说明</div>
+      <div class="narrative" style="font-size:13px;color:var(--dim);line-height:2.2">
+        <span style="color:var(--accent)">「她的六年」</span><br><br>
+        一个关于女性成长的文字模拟器。<br><br>
+        这个游戏里没有怪物、没有魔法、没有超能力。<br>
+        有的只是——现实。<br><br>
+        每一个事件都基于真实的女性经历。<br>
+        高考焦虑、导师偏见、职场性骚扰、<br>
+        催婚压力、薪资不平等、外貌焦虑、<br>
+        家庭控制、公共空间的不安全感……<br><br>
+        这些不是"极端案例"。<br>
+        这些是日常。<br><br>
+        <span style="color:var(--accent)">跨时空对话</span>中出现的声音来自：<br>
+        萧红 · 西蒙·德·波伏娃<br>
+        弗吉尼亚·伍尔夫 · 上野千鹤子<br>
+        张爱玲 · 林徽因<br><br>
+        她们在不同的时代、不同的国家，<br>
+        面对过相似的困境。<br>
+        她们的声音穿越时间，陪你走过这六年。<br><br>
+        <span style="color:var(--dim)">——</span><br><br>
+        如果这个游戏让你想起了什么，<br>
+        请记住：那不是你的错。<br>
+        你已经做得够好了。<br><br>
+        如果你正在经历困难：<br>
+        <span style="color:var(--accent)">全国心理援助热线：400-161-9995</span><br>
+        <span style="color:var(--accent)">生命热线：400-821-1215</span><br><br>
+      </div>
+      <div class="divider"></div>
+      <button class="btn" onclick="showTitle()">返回</button>
+    </div>
+  `);
+}
+
+// ==================== INIT ====================
+showTitle();
+
+</script>
+</body>
+</html>
